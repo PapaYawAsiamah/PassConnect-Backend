@@ -19,6 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('accounts.urls')),
-    path('accounts/', include('allauth.urls')),  # For email verification
+    path('api/', include('passconnectApp.urls')),
+    path('passconnectApp/', include('allauth.urls')),  # For email verification
 ]

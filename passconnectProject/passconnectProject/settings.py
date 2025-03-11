@@ -77,13 +77,16 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Use an app-specific password if using Gmail
-DEFAULT_FROM_EMAIL = 'passconnect@gmail.com'
+# DEFAULT_FROM_EMAIL = 'asiamahpapa1@gmail.com'
+
+
 
 
 # Allauth settings (add them here)
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # Changed from 'mandatory' to 'none'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Allows email verification via GET request
 LOGIN_REDIRECT_URL = '/'  #
 

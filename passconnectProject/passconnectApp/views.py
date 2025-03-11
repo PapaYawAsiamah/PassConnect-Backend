@@ -12,7 +12,7 @@ class SignupView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response(
-            {"message": "User created. Please verify your email."},
+            {"message": "Sign Up Successful"},
             status=status.HTTP_201_CREATED
         )
 

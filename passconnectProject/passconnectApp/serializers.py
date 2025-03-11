@@ -19,7 +19,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
         )
         # Send verification email
-        send_email_confirmation(self.context['request'], user)
+        # send_email_confirmation(self.context['request'], user)
         return user
     
     
@@ -32,8 +32,6 @@ class UserSigninSerializer(serializers.Serializer):
         email = data.get('email')
         password = data.get('password')
         user = authenticate(email=email, password=password)
-        if user and user.is_verified:
+        if user:
             return user
-        elif user and not user.is_verified:
-            raise serializers.ValidationError("Email not verified.")
         raise serializers.ValidationError("Invalid credentials.")
