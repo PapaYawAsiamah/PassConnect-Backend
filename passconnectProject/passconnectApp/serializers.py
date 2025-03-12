@@ -12,6 +12,11 @@ class UserSignupSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'password', 'username']  # Adjust fields as needed
 
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
@@ -19,10 +24,8 @@ class UserSignupSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
         )
         # Send verification email
-        # send_email_confirmation(self.context['request'], user)
+        send_email_confirmation(self.context['request'], user)
         return user
-    
-    
     
 class UserSigninSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -33,5 +36,7 @@ class UserSigninSerializer(serializers.Serializer):
         password = data.get('password')
         user = authenticate(email=email, password=password)
         if user:
-            return user
+            if user.emailaddress_set.filter(verified=True).exists():
+                return user
+            raise serializers.ValidationError("Email not verified.")
         raise serializers.ValidationError("Invalid credentials.")

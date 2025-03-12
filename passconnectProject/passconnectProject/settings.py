@@ -26,8 +26,17 @@ SECRET_KEY = 'django-insecure-mk5bgj7it7nhd1q-j)b&4=_259yzw(b+#a-b4n11-=e48z)ua_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # Your React frontend
+#     "https://g55wzc39-8000.uks1.devtunnels.ms",
+# ]
+# CORS_ALLOW_HEADERS = [
+#     "content-type",
+   
+# ]
 
 # Application definition
 
@@ -43,8 +52,19 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'passconnectApp'
+    'passconnectApp',
+    'corsheaders'
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your Next.js frontend
+    # Add other allowed origins if needed
+]
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    # Add other allowed headers if needed
+]
+CORS_ALLOW_CREDENTIALS = True
 SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +74,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # Added middleware
+    'allauth.account.middleware.AccountMiddleware',
+    'corsheaders.middleware.CorsMiddleware'# Added middleware
 ]
 
 
@@ -73,8 +94,9 @@ REST_FRAMEWORK = {
 # Email settings (example with Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Use an app-specific password if using Gmail
 # DEFAULT_FROM_EMAIL = 'asiamahpapa1@gmail.com'
