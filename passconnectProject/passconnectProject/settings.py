@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 
@@ -58,10 +59,12 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Your Next.js frontend
+    "http://localhost:3001",  # Your Next.js frontend
     # Add other allowed origins if needed
 ]
 CORS_ALLOW_HEADERS = [
     "content-type",
+     "x-csrftoken",
     # Add other allowed headers if needed
 ]
 CORS_ALLOW_CREDENTIALS = True
@@ -91,6 +94,16 @@ REST_FRAMEWORK = {
     ],
 }
 
+
+
+# SESSION_COOKIE_SECURE = True   # HTTPS only
+# SESSION_COOKIE_HTTPONLY = False # Middleware can read it
+# SESSION_COOKIE_SAMESITE = 'None'
+# SESSION_COOKIE_NAME = 'sessionid'  # Default, just confirming
+# SESSION_COOKIE_HTTPONLY = True    # Secure, but still accessible to middleware
+# SESSION_COOKIE_SECURE = False     # False for local dev (http://localhost)
+# SESSION_COOKIE_SAMESITE = 'Lax'   # Works for local dev
+# SESSION_COOKIE_DOMAIN = None      # Default, matches request domain
 # Email settings (example with Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -100,7 +113,7 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Use an app-specific password if using Gmail
 # DEFAULT_FROM_EMAIL = 'asiamahpapa1@gmail.com'
-
+CORS_ALLOW_CREDENTIALS = True
 
 
 
@@ -111,6 +124,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # Changed from 'mandatory' to 'none'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Allows email verification via GET request
 LOGIN_REDIRECT_URL = '/'  #
+
+LOGIN_URL = '/api/signin/'
 
 
 
@@ -141,7 +156,7 @@ ROOT_URLCONF = 'passconnectProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

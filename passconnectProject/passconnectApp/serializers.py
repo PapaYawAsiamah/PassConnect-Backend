@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from allauth.account.utils import send_email_confirmation
 from django.contrib.auth import authenticate
+from .models import Event
 
 User = get_user_model()
 
@@ -40,3 +41,8 @@ class UserSigninSerializer(serializers.Serializer):
                 return user
             raise serializers.ValidationError("Email not verified.")
         raise serializers.ValidationError("Invalid credentials.")
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
