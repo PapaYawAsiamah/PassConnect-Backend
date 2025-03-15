@@ -45,4 +45,4 @@ class UserSigninSerializer(serializers.Serializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'date', 'venue', 'start_time', 'end_time', 'deadline_for_registration', 'max_participants', 'image', 'created_by', 'participants']  # Updated fields

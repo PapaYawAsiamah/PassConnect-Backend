@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CheckAuthView, SigninView, SignupView, SignoutView, csrf, AdminLoginView, EventCreateView, EventUpdateView, EventDeleteView, EventListView, UserRegisteredEventsView, EventRegisterView
+from .views import CheckAuthView, SigninView, SignupView, SignoutView, csrf_token_view, AdminLoginView, EventCreateView, EventUpdateView, EventDeleteView, EventListView, UserRegisteredEventsView, EventRegisterView
 
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),
@@ -7,7 +7,7 @@ urlpatterns = [
     path('admin-login/', AdminLoginView.as_view(), name='admin-login'),
     path('check-auth/', CheckAuthView.as_view(), name='check-auth'),
     path('signout/', SignoutView.as_view(), name='signout'),
-    path('csrf/', csrf, name='csrf'),
+    path('csrf/', csrf_token_view, name='csrf'),
     path('events/create/', EventCreateView.as_view(), name='event-create'),
     path('events/<int:pk>/edit/', EventUpdateView.as_view(), name='event-edit'),
     path('events/<int:pk>/delete/', EventDeleteView.as_view(), name='event-delete'),

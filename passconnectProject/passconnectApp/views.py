@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
+import logging
 
 class SignupView(generics.CreateAPIView):
     serializer_class = UserSignupSerializer
@@ -127,7 +128,9 @@ class EventListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Event.objects.filter(created_by=self.request.user)
+        user = self.request.user
+        logging.info(f"User: {user}, Authenticated: {user.is_authenticated}")
+        return Event.objects.filter(created_by=user)
 
 class UserRegisteredEventsView(generics.ListAPIView):
     serializer_class = EventSerializer
@@ -151,6 +154,10 @@ class EventRegisterView(APIView):
         event.participants.add(request.user)
         return Response({"message": "Successfully registered for the event."}, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
-def csrf(request):
-    return Response({'csrfToken': get_token(request)})
+# @api_view(['GET'])
+# def csrf(request):
+#     return Response({'csrfToken': get_token(request)})
+
+
+def csrf_token_view(request):
+    return JsonResponse({"csrftoken": get_token(request)})

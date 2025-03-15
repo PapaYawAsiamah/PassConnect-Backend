@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
-
+import logging
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -65,20 +65,24 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_HEADERS = [
     "content-type",
      "x-csrftoken",
+    "x-session-id",
+    "csrftoken",
+    "sessionid",
     # Add other allowed headers if needed
 ]
 CORS_ALLOW_CREDENTIALS = True
 SITE_ID = 1
 MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',  # Removed CSRF middleware
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'corsheaders.middleware.CorsMiddleware'# Added middleware
+     # Added middleware
 ]
 
 
@@ -92,17 +96,26 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,  # Adjust the page size as needed
 }
 
 
 
-# SESSION_COOKIE_SECURE = True   # HTTPS only
+
+SESSION_COOKIE_SECURE = True   # HTTPS only
 # SESSION_COOKIE_HTTPONLY = False # Middleware can read it
 # SESSION_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_NAME = 'sessionid'  # Default, just confirming
-# SESSION_COOKIE_HTTPONLY = True    # Secure, but still accessible to middleware
-# SESSION_COOKIE_SECURE = False     # False for local dev (http://localhost)
-# SESSION_COOKIE_SAMESITE = 'Lax'   # Works for local dev
+SESSION_COOKIE_NAME = 'sessionid'  # Default, just confirming
+SESSION_COOKIE_HTTPONLY = True    # Secure, but still accessible to middleware
+SESSION_COOKIE_SECURE = False     # False for local dev (http://localhost)
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_HTTPONLY = False  # Should be False to allow JavaScript access
+CSRF_COOKIE_SECURE = False    # Set to True if using HTTPS
+CSRF_COOKIE_SAMESITE = "Lax"  # Adjust based on frontend/backend hosting
+# Works for local dev
 # SESSION_COOKIE_DOMAIN = None      # Default, matches request domain
 # Email settings (example with Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -115,7 +128,14 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Use an app-specific passw
 # DEFAULT_FROM_EMAIL = 'asiamahpapa1@gmail.com'
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF_COOKIE_SAMESITE = None
+# CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3001",  # Update accordingly
+]
 
+CSRF_COOKIE_HTTPONLY = False  # Ensure JavaScript can access CSRF token
+CSRF_COOKIE_SAMESITE = "Lax"  # Adjust based on frontend/backend hosting
 
 # Allauth settings (add them here)
 ACCOUNT_EMAIL_REQUIRED = True
@@ -134,6 +154,21 @@ LOGIN_URL = '/api/signin/'
 
 
 
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
 
 
 

@@ -11,6 +11,8 @@ class Event(models.Model):
     deadline_for_registration = models.DateField()
     max_participants = models.IntegerField()
     image = models.ImageField(upload_to='event_images/')
+    # image = models.CharField(max_length=255)
+    description = models.TextField()  # Added description field
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_events')
     participants = models.ManyToManyField(User, related_name='registered_events', blank=True)
 
