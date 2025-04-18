@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',  # Add this if not already present
+    'rest_framework',
+    'middleware',  # Replace with your actual app name
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.middleware.SessionHeaderMiddleware', #adding the new middleware app
 ]
 
 ROOT_URLCONF = 'passconnectApp.urls'
@@ -137,3 +140,10 @@ CORS_ALLOW_HEADERS = [
     #  "x-session-id"
     # Add other allowed headers if needed
 ]
+
+
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'  # Use 'None' with HTTPS for cross-site requests
+SESSION_COOKIE_SECURE = False 
