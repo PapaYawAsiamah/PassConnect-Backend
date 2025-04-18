@@ -132,8 +132,14 @@ CORS_ALLOWED_ORIGINS = [
     # Add other allowed origins if needed
 ]
 CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization", 
     "content-type",
-     "x-csrftoken",
-    #  "x-session-id"
-    # Add other allowed headers if needed
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "x-session-id",  # Add this custom header
 ]
